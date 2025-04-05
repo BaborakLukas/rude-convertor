@@ -89,6 +89,17 @@
       max-width: 80%;
     }
 
+    #leaderboard {
+      margin-top: 30px;
+      background-color: #1b1b1b;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 100%;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
     footer {
       margin-top: auto;
       padding: 20px;
@@ -141,30 +152,41 @@
     Pro tip: V is five. Not a peace sign.
   </div>
 
+  <div id="leaderboard">
+    <strong>Hall of Shame:</strong>
+    <ul id="shameList"></ul>
+  </div>
+
   <footer>
     &copy; 2025 Extremely Rude Softworks. We judge numbers *and* people.
   </footer>
 
+  <audio id="failSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+
   <script>
-    const romanMap = {
-      I: 1, V: 5, X: 10, L: 50,
-      C: 100, D: 500, M: 1000
-    };
+    const romanMap = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+    const shameList = document.getElementById("shameList");
+    const failSound = document.getElementById("failSound");
 
     const rudeTips = [
-      "Pro tip: V is five. Not a peace sign.",
+      "You're the human version of a 404 error.",
+      "Rome fell faster than your math skills.",
       "If you put in 'IIII' I will scream.",
       "Don't even try entering 5000. You absolute goblin.",
-      "Roman numerals: because regular numbers weren’t hard enough.",
-      "Did you just guess a numeral? Bold strategy, cotton.",
-      "This site judges your IQ silently. Or loudly.",
-      "Math is hard. You make it harder.",
-      "I bet you think XL is a shirt size.",
       "You type like someone who’s afraid of the calculator app.",
       "‘IX’? Cute. Bet you had to Google that.",
-      "This site isn’t mean. You’re just sensitive.",
-      "Your input made the server consider self-destruction."
+      "Honestly, I'm just disappointed.",
+      "Your numerals are as broken as your logic.",
+      "Are you legally allowed near numbers?",
+      "Math is hard. You make it harder.",
+      "You're the reason abacuses still exist.",
+      "Did you just guess a numeral? Bold strategy, cotton."
     ];
+
+    function isValidRomanSyntax(str) {
+      const romanPattern = /^(M{0,3})(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/i;
+      return romanPattern.test(str);
+    }
 
     function romanToInt(roman) {
       let total = 0, prev = 0;
@@ -206,13 +228,19 @@
         "Not even close. Try again, digit destroyer.",
         "Your input just lowered the national average.",
         "Congratulations, you’ve broken both math and my will to compute.",
-        "ROMAN numerals. Not… whatever that was."
+        "ROMAN numerals. Not… whatever that was.",
+        "This is why the Romans didn't invent calculators.",
+        "Somewhere, a Latin teacher is crying.",
+        "This is why I drink oil.",
+        "You're what happens when autocorrect gives up."
       ];
       return insults[Math.floor(Math.random() * insults.length)];
     }
 
-    function isValidRoman(str) {
-      return /^[IVXLCDM]*$/i.test(str);
+    function addToShameBoard(entry) {
+      const li = document.createElement("li");
+      li.textContent = entry;
+      shameList.appendChild(li);
     }
 
     document.getElementById("convertForm").addEventListener("submit", function(event) {
@@ -221,8 +249,10 @@
       const arabInput = document.getElementById("arab").value.trim();
 
       if (romanInput && !arabInput) {
-        if (!isValidRoman(romanInput)) {
+        if (!/^[IVXLCDM]+$/i.test(romanInput) || !isValidRomanSyntax(romanInput)) {
           alert(getRandomAlertInsult());
+          failSound.play();
+          addToShameBoard(romanInput);
           showRandomTip();
           return;
         }
@@ -231,16 +261,22 @@
         const num = parseInt(arabInput);
         if (isNaN(num)) {
           alert(getRandomAlertInsult());
+          failSound.play();
+          addToShameBoard(arabInput);
         } else {
           document.getElementById("romanInput").value = intToRoman(num);
         }
       } else {
         alert("Pick one input field. Not both. This isn’t rocket science.");
+        failSound.play();
       }
       showRandomTip();
     });
 
-    document.getElementById("roastBtn").addEventListener("click", showRandomTip);
+    document.getElementById("roastBtn").addEventListener("click", () => {
+      showRandomTip();
+      failSound.play();
+    });
 
     document.getElementById("themeToggle").addEventListener("click", function () {
       document.body.classList.toggle("light-theme");
