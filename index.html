@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8613208072373455"
-     crossorigin="anonymous"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Extremely Rude Number Convertor</title>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8613208072373455" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
@@ -207,9 +205,14 @@
         "Are you just smashing the keyboard at this point?",
         "Not even close. Try again, digit destroyer.",
         "Your input just lowered the national average.",
-        "Congratulations, you’ve broken both math and my will to compute."
+        "Congratulations, you’ve broken both math and my will to compute.",
+        "ROMAN numerals. Not… whatever that was."
       ];
       return insults[Math.floor(Math.random() * insults.length)];
+    }
+
+    function isValidRoman(str) {
+      return /^[IVXLCDM]*$/i.test(str);
     }
 
     document.getElementById("convertForm").addEventListener("submit", function(event) {
@@ -218,6 +221,11 @@
       const arabInput = document.getElementById("arab").value.trim();
 
       if (romanInput && !arabInput) {
+        if (!isValidRoman(romanInput)) {
+          alert(getRandomAlertInsult());
+          showRandomTip();
+          return;
+        }
         document.getElementById("arab").value = romanToInt(romanInput);
       } else if (!romanInput && arabInput) {
         const num = parseInt(arabInput);
