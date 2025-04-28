@@ -330,52 +330,6 @@
       }
     }
 
-    function generateCertificate() {
-      const certificateWindow = window.open('', '', 'width=800,height=600');
-      certificateWindow.document.write(`
-        <html>
-          <head>
-            <title>Certificate of Mathematical Shame</title>
-            <style>
-              body {
-                font-family: 'Comic Sans MS', sans-serif;
-                background-color: #fff0f0;
-                color: #900;
-                text-align: center;
-                padding: 50px;
-              }
-              h1 {
-                font-size: 3em;
-                margin-bottom: 20px;
-                color: #c00;
-              }
-              p {
-                font-size: 1.5em;
-              }
-              .stamp {
-                margin-top: 40px;
-                font-size: 2em;
-                transform: rotate(-15deg);
-                color: #d00;
-                font-weight: bold;
-                border: 3px dashed #d00;
-                display: inline-block;
-                padding: 10px 20px;
-              }
-            </style>
-          </head>
-          <body>
-            <h1>Certificate of Mathematical Shame</h1>
-            <p>This certifies that <strong>you</strong> did something so mathematically tragic<br>we felt the need to print this.</p>
-            <p>Please hang this somewhere visible as a warning to others.</p>
-            <div class="stamp">SHAME!</div>
-            <script>setTimeout(function() { window.print(); }, 500);<\/script>
-          </body>
-        </html>
-      `);
-      certificateWindow.document.close();
-    }
-
     // Attach event listeners
     document.getElementById("convertForm").addEventListener("submit", function(event) {
       event.preventDefault();
